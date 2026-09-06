@@ -1,5 +1,26 @@
-const CACHE_NAME = 'kurt-ops-v3';
-const SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
+const CACHE_NAME = 'kurt-ops-v4';
+const SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png',
+  './icons/briefings.png',
+  './icons/centralelogs.png',
+  './icons/chatgpt.png',
+  './icons/claude.png',
+  './icons/copilot.png',
+  './icons/copilotwerk.png',
+  './icons/drive.png',
+  './icons/dsm.png',
+  './icons/filestation.png',
+  './icons/gemini.png',
+  './icons/gezondheid.png',
+  './icons/homepage.png',
+  './icons/jellyfin.png',
+  './icons/mistral.png',
+  './icons/permanentie.png',
+  './icons/photos.png',
+  './icons/reizen.png',
+  './icons/uptimekuma.png',
+  './icons/vault.png',
+  './icons/workhub.png'
+];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(SHELL)));

@@ -412,6 +412,25 @@ const probeIndex = new Map();
 
 const ICON_CDN = 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/';
 
+// Kurts eigen logo's, meegeleverd in de map icons/ naast dit bestand. Die
+// staan dus niet op de NAS en blijven werken als de NAS plat ligt.
+const LOCAL_ICONS = {
+  'WorkHub': 'workhub', 'Briefings CMB': 'briefings', 'Permanentie': 'permanentie',
+  'Centrale Logs': 'centralelogs', 'Vault': 'vault', 'Reizen': 'reizen',
+  'Gezondheid Kurt': 'gezondheid', 'Gezondheid Ilse': 'gezondheid',
+  'Claude': 'claude', 'Copilot': 'copilot', 'Copilot Werk': 'copilotwerk',
+  'ChatGPT': 'chatgpt', 'Gemini': 'gemini', 'Le Chat': 'mistral',
+  'Drive': 'drive', 'File Station': 'filestation', 'DSM': 'dsm',
+  'Synology Photos': 'photos', 'Uptime Kuma': 'uptimekuma',
+  'Homepage': 'homepage', 'Jellyfin': 'jellyfin'
+};
+
+function iconSrc(item) {
+  if (LOCAL_ICONS[item.n]) return './icons/' + LOCAL_ICONS[item.n] + '.png';
+  if (item.i) return ICON_CDN + item.i + '.png';
+  return null;
+}
+
 // Vaste kleur per naam, zodat elk tegeltje zonder logo toch een eigen tint
 // krijgt en je ze uit elkaar houdt op kleur in plaats van enkel op tekst.
 const TINTS = [
@@ -442,11 +461,12 @@ function buildTile(item, aiAccent) {
   icon.textContent = initials(item.n);
   icon.style.background = tintFor(item.n);
 
-  if (item.i) {
+  const src = iconSrc(item);
+  if (src) {
     const img = document.createElement('img');
     img.alt = '';
     img.loading = 'lazy';
-    img.src = ICON_CDN + item.i + '.png';
+    img.src = src;
     // Valt terug op de gekleurde initialen zodra het logo niet laadt,
     // bijvoorbeeld zonder internet of als een naam niet in de set zit.
     img.addEventListener('error', () => { img.remove(); });
