@@ -203,7 +203,7 @@
   .tile.dimmed:hover { opacity: 0.62; }
 
   .tile-icon {
-    width: 34px; height: 34px; flex-shrink: 0;
+    width: 38px; height: 38px; flex-shrink: 0;
     border-radius: 8px;
     background: rgba(148,163,184,0.14);
     display: flex; align-items: center; justify-content: center;
@@ -322,43 +322,43 @@ const TABS = [
       { n: 'EMSA', d: 'Europees Maritiem Veiligheidsagentschap', u: 'https://www.emsa.europa.eu' },
       { n: 'MarineTraffic', d: 'Scheepvaart live volgen', u: 'https://www.marinetraffic.com' },
       { n: 'VesselFinder', d: 'Scheepslocaties en -info', u: 'https://www.vesselfinder.com' },
-      { n: 'Windy', d: 'Weer- en windvoorspelling', u: 'https://www.windy.com' }
+      { n: 'Windy', i: 'windy', d: 'Weer- en windvoorspelling', u: 'https://www.windy.com' }
     ]},
     { name: 'Microsoft', cols: 4, items: [
-      { n: 'Outlook', d: 'E-mail werkaccount', u: 'https://outlook.office.com' },
-      { n: 'Teams', d: 'Chat en vergaderingen', u: 'https://teams.microsoft.com' },
-      { n: 'SharePoint', d: 'Documenten werkomgeving', u: 'https://portal.office.com' }
+      { n: 'Outlook', i: 'microsoft-outlook', d: 'E-mail werkaccount', u: 'https://outlook.office.com' },
+      { n: 'Teams', i: 'microsoft-teams', d: 'Chat en vergaderingen', u: 'https://teams.microsoft.com' },
+      { n: 'SharePoint', i: 'microsoft-sharepoint', d: 'Documenten werkomgeving', u: 'https://portal.office.com' }
     ]}
   ]},
 
   { id: 'ai', icon: '🤖', label: 'AI', groups: [
     { name: 'AI', cols: 3, ai: true, items: [
-      { n: 'Claude', d: 'Sterk in lange documenten en nauwkeurig schrijven', u: 'https://claude.ai' },
-      { n: 'Copilot', d: 'Gratis, gekoppeld aan Microsoft/Bing', u: 'https://copilot.microsoft.com' },
-      { n: 'Copilot Werk', d: 'Werkaccount — mag bedrijfsgegevens verwerken', u: 'https://m365.cloud.microsoft/chat' },
-      { n: 'ChatGPT', d: 'Breed inzetbaar — code, brainstormen, uitleg', u: 'https://chatgpt.com' },
-      { n: 'Gemini', d: "Sterk gekoppeld aan Google Docs/Foto's/Search", u: 'https://gemini.google.com' },
-      { n: 'Le Chat', d: 'Europese AI (Mistral), privacyvriendelijk', u: 'https://chat.mistral.ai' },
-      { n: 'NotebookLM', d: 'Laat eigen documenten samenvatten/doorzoeken', u: 'https://notebooklm.google.com' },
-      { n: 'Perplexity', d: 'AI-zoekmachine met bronvermelding', u: 'https://www.perplexity.ai' },
-      { n: 'OpenRouter', d: 'Toegang tot veel AI-modellen via 1 API-key', u: 'https://openrouter.ai' },
-      { n: 'Open WebUI', d: 'Lokale AI — draait op je eigen NAS, privé', u: 'https://ai.kurtgamernas.synology.me', nas: true },
-      { n: 'Ollama', d: 'Motor achter Open WebUI (geen eigen interface)', u: 'http://192.168.178.93:11434', lan: true }
+      { n: 'Claude', i: 'claude', d: 'Sterk in lange documenten en nauwkeurig schrijven', u: 'https://claude.ai' },
+      { n: 'Copilot', i: 'microsoft-copilot', d: 'Gratis, gekoppeld aan Microsoft/Bing', u: 'https://copilot.microsoft.com' },
+      { n: 'Copilot Werk', i: 'microsoft-copilot', d: 'Werkaccount — mag bedrijfsgegevens verwerken', u: 'https://m365.cloud.microsoft/chat' },
+      { n: 'ChatGPT', i: 'chatgpt', d: 'Breed inzetbaar — code, brainstormen, uitleg', u: 'https://chatgpt.com' },
+      { n: 'Gemini', i: 'google-gemini', d: "Sterk gekoppeld aan Google Docs/Foto's/Search", u: 'https://gemini.google.com' },
+      { n: 'Le Chat', i: 'mistral-ai', d: 'Europese AI (Mistral), privacyvriendelijk', u: 'https://chat.mistral.ai' },
+      { n: 'NotebookLM', i: 'notebooklm', d: 'Laat eigen documenten samenvatten/doorzoeken', u: 'https://notebooklm.google.com' },
+      { n: 'Perplexity', i: 'perplexity', d: 'AI-zoekmachine met bronvermelding', u: 'https://www.perplexity.ai' },
+      { n: 'OpenRouter', i: 'openrouter', d: 'Toegang tot veel AI-modellen via 1 API-key', u: 'https://openrouter.ai' },
+      { n: 'Open WebUI', i: 'open-webui', d: 'Lokale AI — draait op je eigen NAS, privé', u: 'https://ai.kurtgamernas.synology.me', nas: true },
+      { n: 'Ollama', i: 'ollama', d: 'Motor achter Open WebUI (geen eigen interface)', u: 'http://192.168.178.93:11434', lan: true }
     ]}
   ]},
 
   { id: 'nas', icon: '💻', label: 'NAS & Systeem', groups: [
     { name: 'Kennis', cols: 2, items: [
-      { n: 'Drive', d: 'Documenten en bestanden', u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.SDS.Drive.Application#MyDrive', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' },
-      { n: 'File Station', d: 'Bestandsbeheer op de NAS', u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.SDS.App.FileStation3.Instance', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' }
+      { n: 'Drive', i: 'synology-drive', d: 'Documenten en bestanden', u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.SDS.Drive.Application#MyDrive', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' },
+      { n: 'File Station', i: 'synology-drive', d: 'Bestandsbeheer op de NAS', u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.SDS.App.FileStation3.Instance', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' }
     ]},
     { name: 'NAS & Infra', cols: 4, items: [
-      { n: 'DSM', d: 'Synology-beheer (CPU/RAM/opslag)', u: 'https://kurtgamernas.fr2.quickconnect.to', nas: true },
-      { n: 'Synology Photos', d: "Foto's en gezichtsherkenning", u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.Foto.AppInstance', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' },
-      { n: 'Uptime Kuma', d: 'Monitoring van alle services', u: 'https://dashboard.kurtgamernas.synology.me/dashboard', nas: true, probe: 'https://dashboard.kurtgamernas.synology.me' },
-      { n: 'Homepage', d: 'Het dashboard op de NAS zelf', u: 'https://home.kurtgamernas.synology.me', nas: true },
-      { n: 'Home Assistant', d: 'Domotica en sensoren', u: 'http://192.168.178.93:8123', lan: true },
-      { n: 'Jellyfin', d: 'Films en series (eigen NAS)', u: 'https://jellyfin.kurtgamernas.synology.me', nas: true }
+      { n: 'DSM', i: 'synology', d: 'Synology-beheer (CPU/RAM/opslag)', u: 'https://kurtgamernas.fr2.quickconnect.to', nas: true },
+      { n: 'Synology Photos', i: 'synology-photos', d: "Foto's en gezichtsherkenning", u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.Foto.AppInstance', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' },
+      { n: 'Uptime Kuma', i: 'uptime-kuma', d: 'Monitoring van alle services', u: 'https://dashboard.kurtgamernas.synology.me/dashboard', nas: true, probe: 'https://dashboard.kurtgamernas.synology.me' },
+      { n: 'Homepage', i: 'homepage', d: 'Het dashboard op de NAS zelf', u: 'https://home.kurtgamernas.synology.me', nas: true },
+      { n: 'Home Assistant', i: 'home-assistant', d: 'Domotica en sensoren', u: 'http://192.168.178.93:8123', lan: true },
+      { n: 'Jellyfin', i: 'jellyfin', d: 'Films en series (eigen NAS)', u: 'https://jellyfin.kurtgamernas.synology.me', nas: true }
     ]}
   ]},
 
@@ -373,11 +373,11 @@ const TABS = [
 
   { id: 'entertainment', icon: '🎬', label: 'Entertainment', groups: [
     { name: 'Entertainment', cols: 4, items: [
-      { n: 'WhatsApp', d: 'Chatten via de browser', u: 'https://web.whatsapp.com' },
-      { n: 'Messenger', d: 'Facebook Messenger', u: 'https://www.messenger.com' },
-      { n: 'Spotify', d: 'Muziek streamen', u: 'https://open.spotify.com' },
-      { n: 'Prime Video', d: 'Films en series (Amazon)', u: 'https://www.primevideo.com' },
-      { n: 'Jellyfin', d: 'Films en series (eigen NAS)', u: 'https://jellyfin.kurtgamernas.synology.me', nas: true }
+      { n: 'WhatsApp', i: 'whatsapp', d: 'Chatten via de browser', u: 'https://web.whatsapp.com' },
+      { n: 'Messenger', i: 'messenger', d: 'Facebook Messenger', u: 'https://www.messenger.com' },
+      { n: 'Spotify', i: 'spotify', d: 'Muziek streamen', u: 'https://open.spotify.com' },
+      { n: 'Prime Video', i: 'prime-video', d: 'Films en series (Amazon)', u: 'https://www.primevideo.com' },
+      { n: 'Jellyfin', i: 'jellyfin', d: 'Films en series (eigen NAS)', u: 'https://jellyfin.kurtgamernas.synology.me', nas: true }
     ]},
     { name: 'Slaapkamer Muziek', cols: 3, items: [
       { n: 'Media Browser', d: 'Radio Browser BE — Slaapkamer Nest Hub', u: 'http://192.168.178.93:8123/media-browser/media_player.slaapkamer_kurt/app%2Cmedia-source%3A%2F%2Fradio_browser/music%2Cmedia-source%3A%2F%2Fradio_browser%2Fcountry%2FBE', lan: true },
@@ -410,6 +410,21 @@ const contentEl = document.getElementById('content');
 const probes = [];   // { url, els: [dot elements], tiles: [tile elements] }
 const probeIndex = new Map();
 
+const ICON_CDN = 'https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/';
+
+// Vaste kleur per naam, zodat elk tegeltje zonder logo toch een eigen tint
+// krijgt en je ze uit elkaar houdt op kleur in plaats van enkel op tekst.
+const TINTS = [
+  'rgba(59,130,246,0.28)', 'rgba(139,92,246,0.28)', 'rgba(34,197,94,0.26)',
+  'rgba(245,158,11,0.26)', 'rgba(236,72,153,0.26)', 'rgba(20,184,166,0.26)',
+  'rgba(248,113,113,0.26)', 'rgba(129,140,248,0.28)'
+];
+function tintFor(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return TINTS[h % TINTS.length];
+}
+
 function initials(name) {
   const parts = name.replace(/[^\w\s]/g, ' ').trim().split(/\s+/);
   return (parts.length > 1 ? parts[0][0] + parts[1][0] : name.slice(0, 2)).toUpperCase();
@@ -425,6 +440,22 @@ function buildTile(item, aiAccent) {
   const icon = document.createElement('div');
   icon.className = 'tile-icon';
   icon.textContent = initials(item.n);
+  icon.style.background = tintFor(item.n);
+
+  if (item.i) {
+    const img = document.createElement('img');
+    img.alt = '';
+    img.loading = 'lazy';
+    img.src = ICON_CDN + item.i + '.png';
+    // Valt terug op de gekleurde initialen zodra het logo niet laadt,
+    // bijvoorbeeld zonder internet of als een naam niet in de set zit.
+    img.addEventListener('error', () => { img.remove(); });
+    img.addEventListener('load', () => {
+      icon.textContent = '';
+      icon.style.background = 'rgba(148,163,184,0.10)';
+      icon.appendChild(img);
+    });
+  }
 
   const body = document.createElement('div');
   body.className = 'tile-body';

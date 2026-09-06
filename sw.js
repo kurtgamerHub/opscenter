@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kurt-ops-v2';
+const CACHE_NAME = 'kurt-ops-v3';
 const SHELL = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -20,6 +20,23 @@ self.addEventListener('activate', (e) => {
 // checks always reflect reality instead of a cached answer.
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
+
+  // Logo's van de icoon-CDN worden bewaard zodra ze één keer geladen zijn,
+  // zodat de tegels ook zonder verbinding herkenbaar blijven.
+  if (url.hostname === 'cdn.jsdelivr.net') {
+    e.respondWith(
+      caches.open(CACHE_NAME).then((cache) =>
+        cache.match(e.request).then((hit) =>
+          hit || fetch(e.request).then((res) => {
+            if (res && res.status === 200) cache.put(e.request, res.clone());
+            return res;
+          })
+        )
+      )
+    );
+    return;
+  }
+
   if (url.origin !== self.location.origin) return;
 
   if (e.request.mode === 'navigate') {
