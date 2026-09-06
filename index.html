@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kurt's Operations Center</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#03488B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --royal-blue: #056F95;
+    --blue-sea: #03488B;
+    --cloud: #F8F7F8;
+    --ink: #0B2537;
+    --ink-soft: #3E5A6B;
+    --amber: #C97A2B;
+    --amber-soft: #F4E3D0;
+    --green: #2F7A4D;
+    --green-soft: #DCEEE2;
+    --grey-line: #D3DEE3;
+    --grey-fill: #EDF1F2;
+    --radius: 3px;
+  }
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  body {
+    margin: 0;
+    background: var(--cloud);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 700px; margin: 0 auto; padding: 0 20px 64px; }
+
+  .statusbar { background: var(--blue-sea); color: var(--cloud); padding: 28px 20px 24px; margin: 0 0 32px; }
+  .statusbar-inner { max-width: 700px; margin: 0 auto; }
+  .brand { display: flex; align-items: baseline; gap: 10px; margin: 0 0 4px; }
+  .brand-mark { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.5rem; letter-spacing: -0.01em; }
+  .brand-sub { font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; color: #BFD8E6; letter-spacing: 0.02em; }
+  .status-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; flex-wrap: wrap; }
+  .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #8AA2AE; flex-shrink: 0; }
+  .status-dot.checking { background: #BFD8E6; animation: pulse 1.4s ease-in-out infinite; }
+  .status-dot.online { background: #57C97F; }
+  .status-dot.offline { background: var(--amber); }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .status-label { color: #E4EEF2; }
+  .status-time { color: #8FAEBD; }
+
+  section { margin-bottom: 36px; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--grey-line); padding-bottom: 8px; margin-bottom: 16px; }
+  .section-tab { width: 4px; height: 16px; background: var(--royal-blue); flex-shrink: 0; }
+  h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 600; margin: 0; color: var(--blue-sea); }
+  p { margin: 0 0 12px; color: var(--ink-soft); font-size: 0.95rem; }
+
+  .link-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 520px) { .link-grid { grid-template-columns: 1fr; } }
+
+  .link-tile {
+    display: block; text-decoration: none; color: inherit;
+    background: white; border: 1px solid var(--grey-line); border-left: 3px solid var(--royal-blue);
+    border-radius: var(--radius); padding: 12px 14px;
+    transition: border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    position: relative;
+  }
+  .link-tile:hover { background: #F1F6F8; border-left-color: var(--blue-sea); }
+  .link-tile:focus-visible { outline: 2px solid var(--royal-blue); outline-offset: 2px; }
+
+  .link-tile.is-offline { border-left-color: var(--grey-line); background: var(--grey-fill); opacity: 0.6; }
+  .link-tile.is-offline:hover { background: var(--grey-fill); }
+
+  .tile-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .link-name { font-weight: 600; font-size: 0.92rem; color: var(--ink); }
+  .link-desc { font-size: 0.8rem; color: var(--ink-soft); margin-top: 2px; }
+  .tile-dot { width: 7px; height: 7px; border-radius: 50%; background: #B7C4CA; flex-shrink: 0; }
+  .tile-dot.online { background: var(--green); }
+  .tile-dot.offline { background: var(--amber); }
+
+  .kv { background: white; border: 1px solid var(--grey-line); border-radius: var(--radius); overflow: hidden; }
+  .kv-row { display: flex; justify-content: space-between; gap: 12px; padding: 11px 14px; font-size: 0.88rem; }
+  .kv-row + .kv-row { border-top: 1px solid var(--grey-line); }
+  .kv-key { color: var(--ink-soft); }
+  .kv-val { font-family: 'IBM Plex Mono', monospace; font-size: 0.83rem; text-align: right; }
+  .kv-val a { color: var(--blue-sea); }
+
+  ol.steps { list-style: none; counter-reset: step; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  ol.steps li { counter-increment: step; display: flex; gap: 12px; align-items: flex-start; font-size: 0.92rem; }
+  ol.steps li::before {
+    content: counter(step); flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--amber-soft); color: var(--amber); font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500; font-size: 0.78rem; display: flex; align-items: center; justify-content: center;
+  }
+
+  .banner {
+    display: none;
+    background: var(--amber-soft); border: 1px solid #E7C79A; border-radius: var(--radius);
+    padding: 12px 14px; font-size: 0.88rem; color: #7A4E14; margin-bottom: 24px;
+  }
+  .banner.show { display: block; }
+
+  .footnote { font-size: 0.82rem; color: var(--ink-soft); border-top: 1px solid var(--grey-line); padding-top: 20px; margin-top: 8px; }
+  .footnote strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+  <div class="statusbar">
+    <div class="statusbar-inner">
+      <div class="brand">
+        <span class="brand-mark">Operations Center</span>
+        <span class="brand-sub">KURTGAMERNAS</span>
+      </div>
+      <div class="status-row">
+        <span class="status-dot checking" id="statusDot"></span>
+        <span class="status-label" id="statusLabel">NAS-bereikbaarheid wordt gecontroleerd…</span>
+        <span class="status-time" id="statusTime"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="banner" id="offlineBanner">
+      De NAS reageert niet. Diensten hieronder zijn automatisch grijs gezet zodra ze niet antwoorden — de rest blijft gewoon werken. Zie "Als de NAS niet reageert" onderaan voor herstelstappen.
+    </div>
+
+    <section>
+      <div class="section-head"><span class="section-tab"></span><h2>Diensten</h2></div>
+      <p>Elke tegel checkt zelf of ze bereikbaar is. Een grijze tegel reageert nu niet, maar blijft aanklikbaar.</p>
+      <div class="link-grid" id="linkGrid">
+        <!-- tiles injected by JS -->
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><span class="section-tab"></span><h2>Toegang buiten het LAN</h2></div>
+      <div class="kv">
+        <div class="kv-row"><span class="kv-key">QuickConnect</span><span class="kv-val"><a href="https://quickconnect.to/kurtgamernas" target="_blank" rel="noopener">quickconnect.to/kurtgamernas</a></span></div>
+        <div class="kv-row"><span class="kv-key">DDNS</span><span class="kv-val">kurtgamernas.synology.me</span></div>
+        <div class="kv-row"><span class="kv-key">LAN IP (enkel thuis)</span><span class="kv-val">192.168.178.93</span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><span class="section-tab"></span><h2>Als de NAS niet reageert</h2></div>
+      <ol class="steps">
+        <li>Controleer of je eigen toestel internet heeft — probeer een andere website.</li>
+        <li>Probeer de QuickConnect-link hierboven in plaats van de directe links.</li>
+        <li>Check <a href="https://www.synology.com/en-global/support/status" target="_blank" rel="noopener">status.synology.com</a> voor een gekende storing bij Synology zelf.</li>
+        <li>Ben je thuis op hetzelfde netwerk: probeer het LAN-IP-adres rechtstreeks.</li>
+        <li>Blijft het probleem bestaan: herstart de router, en pas daarna de NAS zelf indien nodig.</li>
+      </ol>
+    </section>
+
+    <p class="footnote">
+      Deze app is <strong>installeerbaar</strong> (icoon toevoegen aan je beginscherm) en cachet zichzelf, dus ze opent ook zonder enige internetverbinding. De statuscontroles zelf hebben natuurlijk wél verbinding nodig om iets te kunnen melden.
+    </p>
+
+  </div>
+
+<script>
+  var SERVICES = [
+    { name: 'Dashboard', desc: 'Homepage — overzicht van alles', url: 'https://home.kurtgamernas.synology.me' },
+    { name: 'WorkHub', desc: 'Projecten, taken, kennisbank', url: 'https://workhub.kurtgamernas.synology.me' },
+    { name: 'Permanentie Console', desc: 'Communicatielog wachtofficieren', url: 'https://permanentie.kurtgamernas.synology.me' },
+    { name: 'Briefings CMB', desc: 'Briefing management portal', url: 'https://briefings.kurtgamernas.synology.me' },
+    { name: 'Vault', desc: 'Wachtwoorden, 2FA, encryptie', url: 'https://vault.kurtgamernas.synology.me' },
+    { name: 'Centrale Logs', desc: 'Logviewer voor de PHP-apps', url: 'https://centralelogs.kurtgamernas.synology.me' },
+    { name: 'Home Assistant', desc: 'Domotica', url: 'https://homeassistant.kurtgamernas.synology.me' },
+    { name: 'Open WebUI', desc: 'Lokale AI — Ollama', url: 'https://ai.kurtgamernas.synology.me' },
+    { name: 'Jellyfin', desc: 'Mediaserver', url: 'https://jellyfin.kurtgamernas.synology.me' },
+    { name: 'Uptime Kuma', desc: 'Status van alle services', url: 'https://dashboard.kurtgamernas.synology.me' }
+  ];
+
+  var grid = document.getElementById('linkGrid');
+
+  SERVICES.forEach(function (svc, i) {
+    var a = document.createElement('a');
+    a.className = 'link-tile';
+    a.href = svc.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.id = 'tile-' + i;
+    a.innerHTML =
+      '<div class="tile-top"><span class="link-name">' + svc.name + '</span>' +
+      '<span class="tile-dot" id="dot-' + i + '"></span></div>' +
+      '<div class="link-desc">' + svc.desc + '</div>';
+    grid.appendChild(a);
+  });
+
+  function checkOne(svc, i) {
+    var tile = document.getElementById('tile-' + i);
+    var dot = document.getElementById('dot-' + i);
+    var controller = new AbortController();
+    var timeout = setTimeout(function () { controller.abort(); }, 4000);
+
+    return fetch(svc.url, { mode: 'no-cors', signal: controller.signal })
+      .then(function () {
+        clearTimeout(timeout);
+        tile.classList.remove('is-offline');
+        dot.classList.remove('offline');
+        dot.classList.add('online');
+        return true;
+      })
+      .catch(function () {
+        clearTimeout(timeout);
+        tile.classList.add('is-offline');
+        dot.classList.remove('online');
+        dot.classList.add('offline');
+        return false;
+      });
+  }
+
+  function runAllChecks() {
+    var dot = document.getElementById('statusDot');
+    var label = document.getElementById('statusLabel');
+    var time = document.getElementById('statusTime');
+    var banner = document.getElementById('offlineBanner');
+
+    if (!navigator.onLine) {
+      dot.className = 'status-dot offline';
+      label.textContent = 'Geen internetverbinding op dit toestel';
+      time.textContent = '';
+      banner.classList.add('show');
+      SERVICES.forEach(function (svc, i) {
+        document.getElementById('tile-' + i).classList.add('is-offline');
+        document.getElementById('dot-' + i).classList.add('offline');
+      });
+      return;
+    }
+
+    dot.className = 'status-dot checking';
+    label.textContent = 'NAS-bereikbaarheid wordt gecontroleerd…';
+
+    Promise.all(SERVICES.map(checkOne)).then(function (results) {
+      var anyOnline = results.some(Boolean);
+      var allOnline = results.every(Boolean);
+      time.textContent = 'laatst gecontroleerd: ' + new Date().toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' });
+
+      if (allOnline) {
+        dot.className = 'status-dot online';
+        label.textContent = 'NAS volledig bereikbaar';
+        banner.classList.remove('show');
+      } else if (anyOnline) {
+        dot.className = 'status-dot offline';
+        label.textContent = 'NAS deels bereikbaar — sommige diensten reageren niet';
+        banner.classList.add('show');
+      } else {
+        dot.className = 'status-dot offline';
+        label.textContent = 'NAS niet bereikbaar';
+        banner.classList.add('show');
+      }
+    });
+  }
+
+  runAllChecks();
+  window.addEventListener('online', runAllChecks);
+  window.addEventListener('offline', runAllChecks);
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js').catch(function () {});
+    });
+  }
+</script>
+
+</body>
+</html>
