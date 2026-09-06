@@ -471,23 +471,20 @@ function buildTile(item, aiAccent) {
 
   const icon = document.createElement('div');
   icon.className = 'tile-icon';
-  icon.textContent = initials(item.n);
-  icon.style.background = tintFor(item.n);
-
   const src = iconSrc(item);
   if (src) {
     const img = document.createElement('img');
-    img.alt = '';
-    img.loading = 'lazy';
-    img.src = src;
-    // Valt terug op de gekleurde initialen zodra het logo niet laadt,
-    // bijvoorbeeld zonder internet of als een naam niet in de set zit.
-    img.addEventListener('error', () => { img.remove(); });
-    img.addEventListener('load', () => {
-      icon.textContent = '';
-      icon.style.background = 'rgba(148,163,184,0.10)';
-      icon.appendChild(img);
+    img.alt = ''; img.loading = 'lazy'; img.src = src;
+    img.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;border-radius:6px;';
+    img.addEventListener('error', () => {
+      img.remove();
+      icon.textContent = initials(item.n);
+      icon.style.background = tintFor(item.n);
     });
+    icon.appendChild(img);
+  } else {
+    icon.textContent = initials(item.n);
+    icon.style.background = tintFor(item.n);
   }
 
   const body = document.createElement('div');
