@@ -439,7 +439,7 @@ const LOCAL_ICONS = {
 };
 
 function iconSrc(item) {
-  if (LOCAL_ICONS[item.n]) return './' + LOCAL_ICONS[item.n] + '.png';
+  if (LOCAL_ICONS[item.n]) return './' + LOCAL_ICONS[item.n];
   if (item.i) return ICON_CDN + item.i + '.png';
   return null;
 }
