@@ -1,13 +1,14 @@
 {
-  "name": "Kurt's Operations Center",
+  "name": "Kurt's Digital Operations Center",
   "short_name": "Ops Center",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#F8F7F8",
-  "theme_color": "#03488B",
-  "description": "Snelkoppelingen naar de NAS-diensten, met live status en een werkende terugvalweergave als de NAS niet bereikbaar is.",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "Operations center dat zelf controleert of de NAS bereikbaar is, en anders terugvalt op wat wel werkt.",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }
