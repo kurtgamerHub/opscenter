@@ -653,6 +653,7 @@ document.getElementById('cancelRedirect').addEventListener('click', () => {
 
 function startRedirect() {
   if (redirectCancelled) return;
+  clearInterval(redirectTimer); // stop vorige timer als die nog liep
   let secs = REDIRECT_DELAY;
   countdownEl.textContent = secs;
   redirectBar.classList.add('show');
@@ -690,11 +691,14 @@ function runChecks() {
     if (up === total) {
       setHealth('up', 'NAS bereikbaar — alles beschikbaar');
       banner.className = 'banner';
+      startRedirect();
     } else if (up > 0) {
       setHealth('partial', 'NAS deels bereikbaar (' + up + '/' + total + ')');
       banner.className = 'banner show';
       banner.textContent = 'Niet alle NAS-diensten antwoorden. De grijze tegels reageren nu niet; alles wat niet op de NAS staat (AI-tools, Microsoft, Maritiem, Entertainment) werkt gewoon.';
+      startRedirect();
     } else {
+      stopRedirect();
       setHealth('down', 'NAS niet bereikbaar');
       banner.className = 'banner show';
       banner.textContent = 'De NAS reageert niet. Alles wat niet op de NAS staat werkt gewoon door — AI-tools, Microsoft, maritieme sites en streaming. Zie onderaan de herstelstappen.';
