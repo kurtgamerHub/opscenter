@@ -290,6 +290,13 @@
     white-space: nowrap;
   }
   .btn-cancel:hover { background: rgba(148,163,184,0.28); }
+  .btn-go {
+    background: rgba(34,197,94,0.25); border: 1px solid rgba(34,197,94,0.5);
+    color: #4ade80; border-radius: 999px; padding: 6px 14px;
+    font-size: 0.82rem; cursor: pointer; font-family: inherit;
+    font-weight: 600; white-space: nowrap;
+  }
+  .btn-go:hover { background: rgba(34,197,94,0.4); }
 
 </style>
 </head>
@@ -313,7 +320,10 @@
 
   <div class="redirect-bar" id="redirectBar">
     <span>NAS bereikbaar — doorsturen naar <strong>home.kurtgamernas.synology.me</strong> over <strong id="countdown">8</strong>s</span>
-    <button class="btn-cancel" id="cancelRedirect">Hier blijven</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <button class="btn-go" onclick="window.location.href='https://home.kurtgamernas.synology.me'">Nu doorsturen →</button>
+      <button class="btn-cancel" id="cancelRedirect">Hier blijven</button>
+    </div>
   </div>
 
   <div class="banner" id="banner"></div>
@@ -653,7 +663,7 @@ document.getElementById('cancelRedirect').addEventListener('click', () => {
 
 function startRedirect() {
   if (redirectCancelled) return;
-  clearInterval(redirectTimer); // stop vorige timer als die nog liep
+  if (redirectTimer) return;
   let secs = REDIRECT_DELAY;
   countdownEl.textContent = secs;
   redirectBar.classList.add('show');
@@ -688,15 +698,20 @@ function runChecks() {
     const up = results.filter(Boolean).length;
     const total = results.length;
 
-    if (up === total) {
-      setHealth('up', 'NAS bereikbaar — alles beschikbaar');
-      banner.className = 'banner';
+    if (up >= Math.ceil(total / 2)) {
+      if (up === total) {
+        setHealth('up', 'NAS bereikbaar — alles beschikbaar');
+        banner.className = 'banner';
+      } else {
+        setHealth('partial', 'NAS grotendeels bereikbaar (' + up + '/' + total + ')');
+        banner.className = 'banner';
+      }
       startRedirect();
     } else if (up > 0) {
+      stopRedirect();
       setHealth('partial', 'NAS deels bereikbaar (' + up + '/' + total + ')');
       banner.className = 'banner show';
-      banner.textContent = 'Niet alle NAS-diensten antwoorden. De grijze tegels reageren nu niet; alles wat niet op de NAS staat (AI-tools, Microsoft, Maritiem, Entertainment) werkt gewoon.';
-      startRedirect();
+      banner.textContent = 'Niet alle NAS-diensten antwoorden. Grijze tegels reageren niet — alles buiten de NAS werkt gewoon.';
     } else {
       stopRedirect();
       setHealth('down', 'NAS niet bereikbaar');
