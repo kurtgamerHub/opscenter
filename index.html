@@ -259,6 +259,38 @@
   .kv code { color: var(--text); background: rgba(15,23,42,0.6); padding: 2px 7px; border-radius: 5px; font-size: 0.82rem; }
 
   footer { color: var(--muted); font-size: 0.78rem; margin-top: 22px; text-align: center; }
+
+  /* ---------- Redirect countdown ---------- */
+  .redirect-bar {
+    display: none;
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.35);
+    border-radius: 10px;
+    padding: 13px 18px;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    color: #86efac;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .redirect-bar.show { display: flex; }
+  .redirect-bar strong { color: #4ade80; font-size: 1.05rem; }
+  .btn-cancel {
+    background: rgba(148,163,184,0.15);
+    border: 1px solid rgba(148,163,184,0.3);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .btn-cancel:hover { background: rgba(148,163,184,0.28); }
+
 </style>
 </head>
 <body>
@@ -277,6 +309,11 @@
       </div>
       <button class="btn-recheck" id="recheck">Opnieuw controleren</button>
     </div>
+  </div>
+
+  <div class="redirect-bar" id="redirectBar">
+    <span>NAS bereikbaar — doorsturen naar <strong>home.kurtgamernas.synology.me</strong> over <strong id="countdown">8</strong>s</span>
+    <button class="btn-cancel" id="cancelRedirect">Hier blijven</button>
   </div>
 
   <div class="banner" id="banner"></div>
@@ -595,6 +632,43 @@ function setHealth(state, label) {
   healthTime.textContent = state === 'checking'
     ? ''
     : new Date().toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' });
+}
+
+
+// --------------------------------------------------------------------------
+// Automatische doorverwijzing naar Homepage als NAS volledig bereikbaar is
+// --------------------------------------------------------------------------
+const REDIRECT_URL = 'https://home.kurtgamernas.synology.me';
+const REDIRECT_DELAY = 8; // seconden
+let redirectTimer = null;
+let redirectCancelled = false;
+
+const redirectBar = document.getElementById('redirectBar');
+const countdownEl = document.getElementById('countdown');
+document.getElementById('cancelRedirect').addEventListener('click', () => {
+  redirectCancelled = true;
+  clearInterval(redirectTimer);
+  redirectBar.classList.remove('show');
+});
+
+function startRedirect() {
+  if (redirectCancelled) return;
+  let secs = REDIRECT_DELAY;
+  countdownEl.textContent = secs;
+  redirectBar.classList.add('show');
+  redirectTimer = setInterval(() => {
+    secs--;
+    countdownEl.textContent = secs;
+    if (secs <= 0) {
+      clearInterval(redirectTimer);
+      window.location.href = REDIRECT_URL;
+    }
+  }, 1000);
+}
+
+function stopRedirect() {
+  clearInterval(redirectTimer);
+  redirectBar.classList.remove('show');
 }
 
 function runChecks() {
