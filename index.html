@@ -318,11 +318,12 @@ const TABS = [
       { n: 'Permanentie', d: 'Communicatielog & opvolging wachtofficieren', u: 'https://permanentie.kurtgamernas.synology.me', nas: true },
       { n: 'Centrale Logs', d: 'Logviewer voor Briefings/Permanentie/Gezondheid', u: 'https://centralelogs.kurtgamernas.synology.me', nas: true }
     ]},
-    { name: 'Maritiem', cols: 4, items: [
+    { name: 'Maritiem', cols: 5, items: [
       { n: 'EMSA', d: 'Europees Maritiem Veiligheidsagentschap', u: 'https://www.emsa.europa.eu' },
       { n: 'MarineTraffic', d: 'Scheepvaart live volgen', u: 'https://www.marinetraffic.com' },
       { n: 'VesselFinder', d: 'Scheepslocaties en -info', u: 'https://www.vesselfinder.com' },
-      { n: 'Windy', i: 'windy', d: 'Weer- en windvoorspelling', u: 'https://www.windy.com' }
+      { n: 'Windy', i: 'windy', d: 'Weer- en windvoorspelling', u: 'https://www.windy.com' },
+	  { n: 'ISPS-platform', i: 'ISPS-platform', d: 'Acidenten?', u: 'https://isps-platform.mobilit.fgov.be/' }
     ]},
     { name: 'Microsoft', cols: 4, items: [
       { n: 'Outlook', i: 'microsoft-outlook', d: 'E-mail werkaccount', u: 'https://outlook.office.com' },
@@ -348,9 +349,10 @@ const TABS = [
   ]},
 
   { id: 'nas', icon: '💻', label: 'NAS & Systeem', groups: [
-    { name: 'Kennis', cols: 2, items: [
+    { name: 'Kennis', cols: 3, items: [
       { n: 'Drive', i: 'synology-drive', d: 'Documenten en bestanden', u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.SDS.Drive.Application#MyDrive', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' },
-      { n: 'File Station', i: 'synology-drive', d: 'Bestandsbeheer op de NAS', u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.SDS.App.FileStation3.Instance', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' }
+      { n: 'File Station', i: 'synology-drive', d: 'Bestandsbeheer op de NAS', u: 'https://kurtgamernas.fr2.quickconnect.to/?launchApp=SYNO.SDS.App.FileStation3.Instance', nas: true, probe: 'https://kurtgamernas.fr2.quickconnect.to' },
+	  { n: 'Github', i: 'Github', d: 'Github', u: 'https://github.com/' , nas: false, probe: 'https://github.com/' }
     ]},
     { name: 'NAS & Infra', cols: 4, items: [
       { n: 'DSM', i: 'synology', d: 'Synology-beheer (CPU/RAM/opslag)', u: 'https://kurtgamernas.fr2.quickconnect.to', nas: true },
